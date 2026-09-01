@@ -1,0 +1,16 @@
+{
+  "name": "Chùa Cầu Hội An – Hướng dẫn Di sản",
+  "short_name": "Chùa Cầu",
+  "description": "Hướng dẫn tiếng Việt về Chùa Cầu (Cầu Nhật Bản, Lai Viễn Kiều) tại Hội An: lịch sử hơn 400 năm, kiến trúc, vé tham quan, đường đi và tiện ích xung quanh.",
+  "lang": "vi",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5edda",
+  "theme_color": "#9d3b2f",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

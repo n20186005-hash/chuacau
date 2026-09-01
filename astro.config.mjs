@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// Điền tên miền thật duy nhất tại SITE_URL khi triển khai, ví dụ: https://tenmien.vn
-const site = process.env.SITE_URL?.trim() || undefined;
+// Tên miền chính thức: https://chuacau.org (có thể ghi đè bằng biến môi trường SITE_URL khi triển khai)
+const site = process.env.SITE_URL?.trim() || 'https://chuacau.org';
 
 export default defineConfig({
   site,

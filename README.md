@@ -3,10 +3,10 @@
 Astro + Tailwind CSS + TypeScript, xuất static để chạy trên Cloudflare Workers Assets.
 
 ## Cấu hình tên miền
-Tên miền chỉ được cấu hình qua biến môi trường `SITE_URL` trong `astro.config.mjs`. Khi để trống, build vẫn hoạt động; canonical/OG URL tuyệt đối và sitemap sẽ được bỏ qua. Khi có tên miền:
+Tên miền chính thức: **https://chuacau.org** — được đặt làm giá trị mặc định trong `astro.config.mjs`. Canonical, OG URL tuyệt đối, sitemap và JSON-LD đều dùng tên miền này khi build. Khi triển khai tại môi trường khác, có thể ghi đè bằng biến môi trường `SITE_URL`:
 
 ```bash
-SITE_URL=https://tenmien.vn pnpm build
+SITE_URL=https://chuacau.org pnpm build
 ```
 
 ## Lệnh kiểm tra
