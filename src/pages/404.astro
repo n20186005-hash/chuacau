@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Footer from '../components/Footer.astro';
+import { t, localizedPath, type Locale } from '../i18n';
+
+const path = Astro.url.pathname;
+const locale: Locale = path.startsWith('/en/') ? 'en' : path.startsWith('/zh/') ? 'zh' : 'vi';
+const title = `${t('notFoundH2', locale)} | Chùa Cầu Hội An`;
+const desc = t('notFoundLead', locale);
+const homeHref = localizedPath('home', locale);
+---
+<Base locale={locale} routeKey="home" title={title} description={desc}>
+  <SiteHeader locale={locale} routeKey="home" solid />
+  <main class="shell max-w-2xl py-24 text-center">
+    <p class="sans text-sm tracking-[.2em] uppercase text-[#9d3b2f]">{t('notFoundKicker', locale)}</p>
+    <h1 class="section-title mt-4">{t('notFoundH2', locale)}</h1>
+    <p class="mt-5 leading-8">{t('notFoundLead', locale)}</p>
+    <a class="btn btn-primary mt-8 sans" href={homeHref}>{t('notFoundCta', locale)}</a>
+  </main>
+  <Footer locale={locale} routeKey="home" />
+</Base>

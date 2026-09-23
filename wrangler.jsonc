@@ -2,5 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "chua-cau-hoi-an-guide",
   "compatibility_date": "2026-08-01",
-  "assets": { "directory": "./dist" }
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": { "directory": "./dist/client", "binding": "ASSETS" },
+  "observability": { "enabled": true }
 }

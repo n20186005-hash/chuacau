@@ -1,0 +1,286 @@
+---
+import WeatherSection from './WeatherSection.astro';
+import { home } from '../content/home';
+import { t } from '../i18n';
+import { MAPS_URL } from '../data/site';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = home[locale];
+const seasonCols = t('seasonCols', locale).split('|');
+const behaviorH = t('responsibilityBehavior', locale);
+
+const MAP_IFRAME =
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6825.748861565974!2d108.32349547703177!3d15.877087284774783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31420e7c2d02ec59%3A0x765864d6697d4846!2zQ2jDuWEgQ-G6p3U!5e1!3m2!1szh-CN!2szh-CN!4v1788188750512!5m2!1szh-CN!2szh-CN';
+---
+
+<section class="hero flex items-end text-white">
+  <div class="shell pb-16 pt-40">
+    <span class="sans text-xs tracking-[.25em] uppercase">{c.hero.kicker}</span>
+    <p class="sans mt-3 text-xs tracking-[.2em] uppercase text-[#f4d99d]">{c.hero.breadcrumbLabel}</p>
+    <h1 class="mt-4 max-w-4xl text-5xl leading-[.95] md:text-8xl">{c.hero.h1a}<br/><em class="font-normal text-[#f4d99d]">{c.hero.h1em}</em></h1>
+    <p class="mt-7 max-w-2xl text-lg leading-8">{c.hero.lead}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn btn-primary sans" href="#visit">{c.hero.ctaPlan}</a>
+      <a class="btn btn-ghost sans" href={MAPS_URL} rel="noopener">{c.hero.ctaMaps}</a>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section class="paper py-20">
+    <div class="shell grid gap-12 md:grid-cols-[1.1fr_.9fr]">
+      <div>
+        <p class="ornament sans text-xs tracking-[.2em] uppercase">{c.intro.ornament}</p>
+        <h2 id="history" class="section-title mt-5">{c.intro.h2}</h2>
+        <div class="prose-vn mt-6">
+          {c.intro.paras.map((p) => <p>{p}</p>)}
+        </div>
+        <div class="mt-9">
+          <p class="ornament sans text-xs tracking-[.2em] uppercase">{t('timelineLabel', locale)}</p>
+          <ol class="timeline mt-5">
+            {c.intro.timeline.map((li) => <li><span class="t-year">{li.year}</span><span>{li.text}</span></li>)}
+          </ol>
+        </div>
+      </div>
+      <figure class="gallery min-h-[480px]">
+        <img src="/images/chua-cau-night.jpg" alt={c.intro.figcaption} loading="lazy"/>
+        <figcaption class="mt-3 text-xs sans">{c.intro.figcaption}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="legends" class="py-20">
+    <div class="shell">
+      <span class="tag sans text-xs">{c.legends.tag}</span>
+      <h2 class="section-title mt-5">{c.legends.h2}</h2>
+      <p class="mt-5 max-w-3xl leading-8">{c.legends.lead}</p>
+      <div class="mt-10 grid gap-5 md:grid-cols-2">
+        {c.legends.cards.map((card) => (
+          <article class="card p-7">
+            <span class="kind">{card.kind}</span>
+            <h3 class="mt-3 text-xl">{card.title}</h3>
+            <p class="mt-3 leading-7">{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="visit" class="py-20">
+    <div class="shell">
+      <span class="tag sans text-xs">{c.visit.tag}</span>
+      <h2 class="section-title mt-5">{c.visit.h2}</h2>
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        {c.visit.cards.map((card) => (
+          <article class="card p-7">
+            <h3 class="text-xl">{card.title}</h3>
+            <p class="mt-3 leading-7">{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#1e4051] py-20 text-white">
+    <div class="shell grid gap-8 md:grid-cols-2">
+      <div>
+        <h2 class="section-title">{c.moments.h2}</h2>
+        <p class="mt-6 max-w-xl leading-8 text-[#e9e3d7]">{c.moments.lead}</p>
+      </div>
+      <div class="gallery h-[420px]">
+        <img src="/images/chua-cau-portal.jpg" alt={c.moments.h2} loading="lazy"/>
+      </div>
+    </div>
+  </section>
+
+  <section id="getting-there" class="paper py-20">
+    <div class="shell grid gap-10 lg:grid-cols-[1.2fr_.8fr]">
+      <div>
+        <span class="tag sans text-xs">{c.move.tag}</span>
+        <h2 class="section-title mt-5">{c.move.h2}</h2>
+        <div class="prose-vn mt-6">
+          {c.move.subs.map((s) => (
+            <>
+              <h3>{s.h3}</h3>
+              <p>{s.body}</p>
+            </>
+          ))}
+        </div>
+      </div>
+      <div class="map">
+        <iframe src={MAP_IFRAME} loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title={c.move.mapTitle}></iframe>
+      </div>
+    </div>
+  </section>
+
+  <WeatherSection locale={locale} />
+
+  <section id="facilities" class="py-20">
+    <div class="shell">
+      <span class="tag sans text-xs">{c.utilities.tag}</span>
+      <h2 class="section-title mt-5">{c.utilities.h2}</h2>
+      <p class="mt-5 max-w-3xl leading-8">{c.utilities.lead}</p>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {c.utilities.cards.map((card) => (
+          <article class="card p-6">
+            <h3 class="text-lg">{card.title}</h3>
+            <p class="mt-2 text-sm leading-6">{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="paper py-20">
+    <div class="shell">
+      <span class="tag sans text-xs">{c.seasonal.tag}</span>
+      <h2 class="section-title mt-5">{c.seasonal.h2}</h2>
+      <p class="mt-5 max-w-3xl leading-8">{c.seasonal.lead}</p>
+      <div class="mt-10 overflow-x-auto">
+        <table class="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr class="bg-[#9d3b2f] text-white">
+              <th class="p-3">{seasonCols[0]}</th>
+              <th class="p-3">{seasonCols[1]}</th>
+              <th class="p-3">{seasonCols[2]}</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[rgba(98,69,37,.18)]">
+            {c.seasonal.rows.map((row) => (
+              <tr>
+                <td class="p-3 align-top"><strong>{row.phase}</strong></td>
+                <td class="p-3 align-top">{row.weather}</td>
+                <td class="p-3 align-top">{row.advice}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-5 max-w-3xl text-sm leading-7 text-[#1e4051]">{c.seasonal.note}</p>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="shell">
+      <span class="tag sans text-xs">{c.itinerary.tag}</span>
+      <h2 class="section-title mt-5">{c.itinerary.h2}</h2>
+      <p class="mt-5 max-w-3xl leading-8">{c.itinerary.lead}</p>
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        {c.itinerary.personaCards.map((card) => (
+          <article class="card p-7">
+            <span class="kind">{card.kind}</span>
+            <h3 class="mt-3 text-xl">{card.title}</h3>
+            <p class="mt-3 leading-7">{card.body}</p>
+          </article>
+        ))}
+      </div>
+      <div class="mt-8 grid gap-5 md:grid-cols-2">
+        <article class="card p-7">
+          <h3 class="text-xl">{c.itinerary.halfDay.title}</h3>
+          <p class="mt-3 leading-7">{c.itinerary.halfDay.body}</p>
+        </article>
+        <article class="card p-7">
+          <h3 class="text-xl">{c.itinerary.fullDay.title}</h3>
+          <p class="mt-3 leading-7">{c.itinerary.fullDay.body}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="shell">
+      <div class="grid gap-8 md:grid-cols-2">
+        <div>
+          <h2 class="section-title">{c.foodNearby.foodH2}</h2>
+          <p class="mt-5 leading-8">{c.foodNearby.foodLead}</p>
+        </div>
+        <div>
+          <h2 class="section-title">{c.foodNearby.nearbyH2}</h2>
+          <p class="mt-4 leading-8">{c.foodNearby.nearbyLead}</p>
+          <div class="mt-5 grid gap-3 sans">
+            {c.foodNearby.nearbyTags.map((tag) => <span class="card p-4">{tag}</span>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chup-anh" class="py-20">
+    <div class="shell">
+      <span class="tag sans text-xs">{c.photo.tag}</span>
+      <h2 class="section-title mt-5">{c.photo.h2}</h2>
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {c.photo.cards.map((card) => (
+          <article class="card p-6">
+            <h3 class="text-lg">{card.title}</h3>
+            <p class="mt-2 text-sm leading-6">{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="ung-xu" class="paper py-20">
+    <div class="shell">
+      <span class="tag sans text-xs">{c.responsibility.tag}</span>
+      <h2 class="section-title mt-5">{c.responsibility.h2}</h2>
+      <p class="mt-5 max-w-3xl leading-8">{c.responsibility.lead}</p>
+      <div class="mt-10 grid gap-8 lg:grid-cols-2">
+        <div>
+          <h3 class="text-xl">{behaviorH}</h3>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            <article class="card p-6">
+              <h4 class="text-[#9d3b2f]">{c.responsibility.should.h4}</h4>
+              <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-6">
+                {c.responsibility.should.items.map((i) => <li>{i}</li>)}
+              </ul>
+            </article>
+            <article class="card p-6">
+              <h4 class="text-[#1e4051]">{c.responsibility.shouldNot.h4}</h4>
+              <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-6">
+                {c.responsibility.shouldNot.items.map((i) => <li>{i}</li>)}
+              </ul>
+            </article>
+          </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {c.responsibility.cards.map((card) => (
+            <article class="card p-6">
+              <h4 class="text-lg">{card.title}</h4>
+              <p class="mt-2 text-sm leading-6">{card.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+      <p class="mt-8 max-w-3xl text-sm leading-7 text-[#1e4051]">{c.responsibility.note}</p>
+    </div>
+  </section>
+
+  <section id="faq" class="bg-[#ead7b4] py-20">
+    <div class="shell">
+      <h2 class="section-title">{c.faq.h2}</h2>
+      <div class="mt-10 grid gap-4">
+        {c.faq.pairs.map(([q, a]) => (
+          <details class="card p-6">
+            <summary class="cursor-pointer text-lg font-bold">{q}</summary>
+            <p class="mt-4 leading-7">{a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="paper py-16">
+    <div class="shell">
+      <h2 class="text-2xl">{c.sources.h2}</h2>
+      <p class="mt-4 max-w-4xl leading-7">{c.sources.lead}</p>
+      <div class="mt-5 flex flex-wrap gap-3 sans text-sm">
+        {c.sources.links.map((l) => <a class="tag" href={l.href} rel="noopener">{l.label}</a>)}
+      </div>
+    </div>
+  </section>
+</main>

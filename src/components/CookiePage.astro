@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Footer from '../components/Footer.astro';
+import { t } from '../i18n';
+import type { Locale, RouteKey } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+}
+const { locale, routeKey, title, description } = Astro.props;
+---
+<Base locale={locale} routeKey={routeKey} title={title} description={description}>
+  <SiteHeader locale={locale} routeKey={routeKey} solid />
+  <main class="shell max-w-4xl py-16">
+    <p class="sans text-sm">{t('cookieUpdated', locale)}</p>
+    <h1 class="section-title">{t('cookieH2', locale)}</h1>
+    <p class="mt-5 leading-8">{t('cookieLead', locale)}</p>
+    <div class="card mt-8 p-7 sans">
+      <div class="cookie-row">
+        <div><strong>{t('cookieEssential', locale)}</strong><p class="text-sm">{t('cookieEssentialDesc', locale)}</p></div>
+        <span>{t('cookieAlwaysOn', locale)}</span>
+      </div>
+      <div class="cookie-row">
+        <div><strong>{t('cookieAnalytics', locale)}</strong><p class="text-sm">{t('cookieAnalyticsDesc', locale)}</p></div>
+        <label><input id="analytics" type="checkbox" /> {t('cookieActivate', locale)}</label>
+      </div>
+      <div class="cookie-row">
+        <div><strong>{t('cookiePrefs', locale)}</strong><p class="text-sm">{t('cookiePrefsDesc', locale)}</p></div>
+        <label><input id="prefs" type="checkbox" /> {t('cookieActivate', locale)}</label>
+      </div>
+      <div class="cookie-row">
+        <div><strong>{t('cookieMarketing', locale)}</strong><p class="text-sm">{t('cookieMarketingDesc', locale)}</p></div>
+        <span>{t('cookieOff', locale)}</span>
+      </div>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <button id="save" class="btn btn-primary">{t('cookieSave', locale)}</button>
+        <button id="reject" class="btn border border-[#9d3b2f]">{t('cookieReject', locale)}</button>
+      </div>
+      <p id="status" class="mt-4 text-sm" aria-live="polite"></p>
+    </div>
+    <script is:inline>{`const a=document.getElementById('analytics'),p=document.getElementById('prefs'),s=document.getElementById('status');a.checked=localStorage.getItem('analytics-consent')==='granted';p.checked=localStorage.getItem('prefs-consent')==='granted';document.getElementById('save').onclick=()=>{localStorage.setItem('analytics-consent',a.checked?'granted':'denied');localStorage.setItem('prefs-consent',p.checked?'granted':'denied');s.textContent=${JSON.stringify(t('cookieSaved', locale))}};document.getElementById('reject').onclick=()=>{a.checked=false;p.checked=false;localStorage.setItem('analytics-consent','denied');localStorage.setItem('prefs-consent','denied');s.textContent=${JSON.stringify(t('cookieRejected', locale))}};`}</script>
+  </main>
+  <Footer locale={locale} routeKey={routeKey} />
+</Base>

@@ -1,0 +1,9 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import { terms } from '../../content/legal';
+import { t } from '../../i18n';
+import type { Locale } from '../../i18n';
+
+const locale: Locale = 'zh';
+---
+<LegalPage locale={locale} routeKey="terms" title={t('termsTitle', locale)} description={t('termsDesc', locale)} doc={terms[locale]} />

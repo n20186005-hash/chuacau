@@ -1,13 +1,53 @@
 ---
 import '../styles.css';
-const { title, description, path='/', image='/images/chua-cau-day.jpg', imageAlt='Chùa Cầu (Cầu Nhật Bản / Lai Viễn Kiều) – Hội An, Đà Nẵng, Việt Nam' } = Astro.props;
-const absolute = Astro.site ? new URL(path, Astro.site).toString() : undefined;
-const imageAbs = Astro.site ? new URL(image, Astro.site).toString() : undefined;
+import { htmlLang, ogLocale, hreflangLinks, localizedPath, type Locale, type RouteKey } from '../i18n';
+import { SITE_NAME } from '../data/site';
+
+interface Props {
+  locale: Locale;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  jsonLd?: object[];
+}
+const { locale, routeKey, title, description, image = '/images/chua-cau-day.jpg', imageAlt, jsonLd = [] } = Astro.props;
+
+const siteUrl = Astro.site?.toString();
+const path = localizedPath(routeKey, locale);
+const canonical = siteUrl ? new URL(path, siteUrl).toString() : path;
+const imageAbs = siteUrl ? new URL(image, siteUrl).toString() : image;
+const alternates = hreflangLinks(routeKey, siteUrl);
+const siteName = SITE_NAME[locale];
+const alt = imageAlt ?? siteName;
 ---
-<!doctype html><html lang="vi"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/>
-<title>{title}</title><meta name="description" content={description}/>
-{absolute && <link rel="canonical" href={absolute}/>}<meta property="og:type" content="website"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/>{absolute && <meta property="og:url" content={absolute}/>} {imageAbs && <meta property="og:image" content={imageAbs}/>}<meta property="og:image:alt" content={imageAlt}/><meta property="og:locale" content="vi_VN"/><meta name="theme-color" content="#9d3b2f"/>
-<link rel="icon" href="/icons/favicon.svg" type="image/svg+xml"/><link rel="icon" href="/icons/favicon-32.png" sizes="32x32"/><link rel="icon" href="/icons/favicon-16.png" sizes="16x16"/><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"/><link rel="manifest" href="/manifest.webmanifest"/>
-<script is:inline>{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};if(localStorage.getItem('analytics-consent')==='granted'){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP';document.head.appendChild(s);gtag('js',new Date());gtag('config','G-HXM22WWPKP',{anonymize_ip:true});}`}</script>
-<script is:inline>{`if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}`}</script>
-</head><body><slot/></body></html>
+<!doctype html>
+<html lang={htmlLang[locale]}>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width"/>
+  <title>{title}</title>
+  <meta name="description" content={description}/>
+  <link rel="canonical" href={canonical}/>
+  {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href}/>)}
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content={title}/>
+  <meta property="og:description" content={description}/>
+  <meta property="og:url" content={canonical}/>
+  <meta property="og:image" content={imageAbs}/>
+  <meta property="og:image:alt" content={alt}/>
+  <meta property="og:locale" content={ogLocale[locale]}/>
+  <meta property="og:site_name" content={siteName}/>
+  <meta name="theme-color" content="#9d3b2f"/>
+  <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml"/>
+  <link rel="icon" href="/icons/favicon-32.png" sizes="32x32"/>
+  <link rel="icon" href="/icons/favicon-16.png" sizes="16x16"/>
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"/>
+  <link rel="manifest" href="/manifest.webmanifest"/>
+  <script is:inline>{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)};if(localStorage.getItem('analytics-consent')==='granted'){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP';document.head.appendChild(s);gtag('js',new Date());gtag('config','G-HXM22WWPKP',{anonymize_ip:true});}`}</script>
+  <script is:inline>{`if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}`}</script>
+  {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)}></script>)}
+</head>
+<body><slot/></body>
+</html>

@@ -1,0 +1,8 @@
+---
+import CookiePage from '../../components/CookiePage.astro';
+import { t } from '../../i18n';
+import type { Locale } from '../../i18n';
+
+const locale: Locale = 'zh';
+---
+<CookiePage locale={locale} routeKey="cookie" title={t('cookieTitle', locale)} description={t('cookiePageDesc', locale)} />

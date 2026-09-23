@@ -1,4 +1,9 @@
 ---
-import Base from '../layouts/Base.astro'; import Logo from '../components/Logo.astro'; import Footer from '../components/Footer.astro';
+import LegalPage from '../components/LegalPage.astro';
+import { terms } from '../content/legal';
+import { t } from '../i18n';
+import type { Locale } from '../i18n';
+
+const locale: Locale = 'vi';
 ---
-<Base title="Điều khoản dịch vụ | Chùa Cầu Hội An" description="Điều khoản sử dụng trang hướng dẫn độc lập Chùa Cầu Hội An."><header class="bg-[#2a2118] text-white"><div class="shell py-6"><Logo/></div></header><main class="shell legal prose-vn max-w-4xl py-16"><p class="sans text-sm">Cập nhật: tháng 9 năm 2026</p><h1 class="section-title">Điều khoản dịch vụ</h1><p>Khi truy cập và sử dụng trang này, bạn đồng ý với các điều khoản dưới đây.</p><h2>Mục đích nội dung</h2><p>Trang là dự án hướng dẫn du lịch độc lập, phi lợi nhuận, không trực thuộc Chùa Cầu, cơ quan quản lý di sản, chính quyền thành phố Đà Nẵng hay bất kỳ tổ chức chính thức nào.</p><h2>Độ chính xác của thông tin</h2><p>Chúng tôi cố gắng đối chiếu thông tin với nguồn công khai có thẩm quyền, nhưng giờ mở cửa, giá vé, tổ chức giao thông, điều kiện bảo tồn và dịch vụ có thể thay đổi. Hãy xác minh thông tin quan trọng qua kênh chính thức trước khi khởi hành.</p><h2>Sở hữu trí tuệ</h2><p>Thiết kế và nội dung biên soạn gốc của trang được bảo hộ theo luật áp dụng. Ảnh thuộc bản quyền của các nhiếp ảnh gia tương ứng và được sử dụng theo giấy phép ghi trong hồ sơ dự án. Google Maps và dữ liệu bản đồ tuân theo điều khoản của Google.</p><h2>Liên kết ngoài</h2><p>Liên kết tới cơ quan du lịch, bản đồ hoặc nguồn tham khảo chỉ nhằm giúp người đọc kiểm chứng và lập kế hoạch; chúng tôi không kiểm soát nội dung hay chính sách của các trang đó.</p><h2>Giới hạn trách nhiệm</h2><p>Trang được cung cấp theo hiện trạng và không đưa ra bảo đảm tuyệt đối về tính đầy đủ hoặc phù hợp cho một mục đích cụ thể. Trong phạm vi pháp luật cho phép, dự án không chịu trách nhiệm cho thiệt hại phát sinh từ quyết định du lịch chỉ dựa trên nội dung của trang.</p></main><Footer/></Base>
+<LegalPage locale={locale} routeKey="terms" title={t('termsTitle', locale)} description={t('termsDesc', locale)} doc={terms[locale]} />

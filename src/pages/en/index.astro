@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import HomeContent from '../../components/HomeContent.astro';
+import Footer from '../../components/Footer.astro';
+import { home } from '../../content/home';
+import { buildAll } from '../../lib/schema';
+import type { Locale } from '../../i18n';
+
+const locale: Locale = 'en';
+const siteUrl = Astro.site?.toString() ?? '';
+const meta = home[locale].meta;
+const jsonLd = buildAll(locale, siteUrl);
+---
+<Base locale={locale} routeKey="home" title={meta.title} description={meta.description} jsonLd={jsonLd}>
+  <SiteHeader locale={locale} routeKey="home" />
+  <HomeContent locale={locale} />
+  <Footer locale={locale} routeKey="home" />
+</Base>

@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Footer from '../components/Footer.astro';
+import type { Locale, RouteKey } from '../i18n';
+import type { LegalDoc } from '../content/legal';
+
+interface Props {
+  locale: Locale;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+  doc: LegalDoc;
+}
+const { locale, routeKey, title, description, doc } = Astro.props;
+---
+<Base locale={locale} routeKey={routeKey} title={title} description={description}>
+  <SiteHeader locale={locale} routeKey={routeKey} solid />
+  <main class="shell legal prose-vn max-w-4xl py-16">
+    <p class="sans text-sm">{doc.updated}</p>
+    <h1 class="section-title">{doc.h1}</h1>
+    <p>{doc.intro}</p>
+    {doc.sections.map((s) => (
+      <>
+        <h2>{s.h2}</h2>
+        <p>{s.body}</p>
+      </>
+    ))}
+  </main>
+  <Footer locale={locale} routeKey={routeKey} />
+</Base>
