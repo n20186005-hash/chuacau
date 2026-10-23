@@ -1,1 +1,5 @@
-<a href="/" class="flex items-center gap-3 no-underline" aria-label="Chùa Cầu Hội An"><svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="#9d3b2f" d="M8 42h48v8H8z"/><path fill="#d79a28" d="M12 38c8-18 32-18 40 0h-7c-7-10-19-10-26 0z"/><path fill="#1e4051" d="M15 48h34v5H15zM20 34h24v4H20z"/><circle cx="32" cy="20" r="4" fill="#9d3b2f"/></svg><div><strong class="block text-lg leading-none">CHÙA CẦU</strong><span class="sans text-xs tracking-[.18em]">HỘI AN · DU LỊCH</span></div></a>
+---
+import { localizedPath, type Locale } from '../i18n';
+const { locale = 'vi' } = Astro.props as { locale?: Locale };
+---
+<a href={localizedPath('home', locale)} class="flex items-center gap-3 no-underline" aria-label="Chùa Cầu Hội An"><svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true"><path fill="#9d3b2f" d="M8 42h48v8H8z"/><path fill="#d79a28" d="M12 38c8-18 32-18 40 0h-7c-7-10-19-10-26 0z"/><path fill="#1e4051" d="M15 48h34v5H15zM20 34h24v4H20z"/><circle cx="32" cy="20" r="4" fill="#9d3b2f"/></svg><div><strong class="block text-lg leading-none">CHÙA CẦU</strong><span class="sans text-xs tracking-[.18em]">{locale === 'vi' ? 'HỘI AN · DU LỊCH' : locale === 'en' ? 'HỘI AN · VISITOR GUIDE' : '會安 · 旅遊導覽'}</span></div></a>

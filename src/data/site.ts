@@ -2,31 +2,17 @@
 // Chỉ chỉnh sửa thông tin vận hành (giờ, vé, địa chỉ) tại đây.
 import type { Locale } from '../i18n';
 
-export const GEO = { lat: 15.8770873, lon: 108.3234955 };
+export const GEO = { lat: 15.8770873, lon: 108.3260704 };
 export const MAPS_URL = 'https://maps.app.goo.gl/H1Mb1t265YrSiKrK9';
 
-// Địa chỉ hành chính: Hội An thuộc tỉnh Quảng Nam (không phải Đà Nẵng).
+// Current address cross-checked with the Hội An ward government and Maps (2026-10-23).
 export const ADDRESS = {
   street: 'Nguyễn Thị Minh Khai',
   locality: 'Hội An',
-  region: 'Quảng Nam',
+  region: 'Đà Nẵng',
   postalCode: '564010',
   country: 'VN',
 };
-
-export const RATING = { ratingValue: '4.3', reviewCount: '29287' };
-
-export const OPENING_HOURS = [
-  { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:00', closes: '11:00' },
-  { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '15:00', closes: '22:00' },
-];
-
-// Liên kết đối chiếu uy tín (không trùng lặp).
-export const SAME_AS = [
-  MAPS_URL,
-  'https://danangfantasticity.com/en/see-and-do/japanese-covered-bridge-chua-cau',
-  'https://hoianworldheritage.org.vn/',
-];
 
 export const IMAGES = {
   hero: '/images/chua-cau-day.jpg',

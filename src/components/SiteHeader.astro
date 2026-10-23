@@ -20,20 +20,20 @@ const switchLinks = langs.map((l) => ({ ...l, href: localizedPath(routeKey, l.co
 ---
 
 { solid ? (
-  <header class="bg-[#2a2118] text-white"><div class="shell flex items-center justify-between py-6"><Logo/>
+  <header class="bg-[#2a2118] text-white"><div class="shell flex items-center justify-between py-6"><Logo locale={locale}/>
     <nav class="flex items-center gap-4 sans text-sm" aria-label="Language">
-      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code} lang={l.code}>{l.label}</a>)}
+      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
     </nav>
   </div></header>
 ) : (
-  <header class="absolute z-10 w-full text-white"><div class="shell flex items-center justify-between py-6"><Logo/>
+  <header class="absolute z-10 w-full text-white"><div class="shell flex items-center justify-between py-6"><Logo locale={locale}/>
     <nav class="hidden items-center gap-5 text-sm sans md:flex">
       {navLabels.map((label, i) => <a class="nav-link" href={navAnchors[i]}>{label}</a>)}
       <span class="mx-1 opacity-40">|</span>
-      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code} lang={l.code}>{l.label}</a>)}
+      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
     </nav>
     <nav class="flex items-center gap-3 sans text-sm md:hidden" aria-label="Language">
-      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code} lang={l.code}>{l.label}</a>)}
+      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
     </nav>
   </div></header>
 ) }

@@ -20,6 +20,7 @@ const { locale, routeKey, title, description, doc } = Astro.props;
     <p class="sans text-sm">{doc.updated}</p>
     <h1 class="section-title">{doc.h1}</h1>
     <p>{doc.intro}</p>
+    {routeKey === 'privacy' && <p><a href="https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/">Cloudflare Web Analytics: {locale === 'vi' ? 'nguồn và thu thập dữ liệu' : locale === 'en' ? 'data origin and collection' : '資料來源與蒐集'}</a> · <a href="https://policies.google.com/privacy">Google Privacy</a> · <a href="https://open-meteo.com/en/terms">Open-Meteo</a></p>}
     {doc.sections.map((s) => (
       <>
         <h2>{s.h2}</h2>

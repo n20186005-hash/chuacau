@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import Footer from '../components/Footer.astro';
-import { t } from '../i18n';
+import { t, localizedPath } from '../i18n';
 import type { Locale, RouteKey } from '../i18n';
 
 interface Props {
@@ -12,10 +12,11 @@ interface Props {
   description: string;
 }
 const { locale, routeKey, title, description } = Astro.props;
+const failure = { vi:'Không xác nhận được lựa chọn đã lưu. Phân tích đang tắt trong trang này; trình duyệt hoặc tab khác có thể còn lựa chọn cũ.', en:'The saved choice could not be confirmed. Analytics is off in this page; another tab or stored choice may still differ.', zh:'無法確認已儲存選擇。本頁分析已關閉；其他分頁或原有儲存選擇可能仍不同。' }[locale];
 ---
 <Base locale={locale} routeKey={routeKey} title={title} description={description}>
   <SiteHeader locale={locale} routeKey={routeKey} solid />
-  <main class="shell max-w-4xl py-16">
+  <main class="shell max-w-4xl py-16" id="cookie-settings" data-saved={t('cookieSaved', locale)} data-rejected={t('cookieRejected', locale)} data-failure={failure}>
     <p class="sans text-sm">{t('cookieUpdated', locale)}</p>
     <h1 class="section-title">{t('cookieH2', locale)}</h1>
     <p class="mt-5 leading-8">{t('cookieLead', locale)}</p>
@@ -30,7 +31,7 @@ const { locale, routeKey, title, description } = Astro.props;
       </div>
       <div class="cookie-row">
         <div><strong>{t('cookiePrefs', locale)}</strong><p class="text-sm">{t('cookiePrefsDesc', locale)}</p></div>
-        <label><input id="prefs" type="checkbox" /> {t('cookieActivate', locale)}</label>
+        <span>{t('cookieOff', locale)}</span>
       </div>
       <div class="cookie-row">
         <div><strong>{t('cookieMarketing', locale)}</strong><p class="text-sm">{t('cookieMarketingDesc', locale)}</p></div>
@@ -42,7 +43,8 @@ const { locale, routeKey, title, description } = Astro.props;
       </div>
       <p id="status" class="mt-4 text-sm" aria-live="polite"></p>
     </div>
-    <script is:inline>{`const a=document.getElementById('analytics'),p=document.getElementById('prefs'),s=document.getElementById('status');a.checked=localStorage.getItem('analytics-consent')==='granted';p.checked=localStorage.getItem('prefs-consent')==='granted';document.getElementById('save').onclick=()=>{localStorage.setItem('analytics-consent',a.checked?'granted':'denied');localStorage.setItem('prefs-consent',p.checked?'granted':'denied');s.textContent=${JSON.stringify(t('cookieSaved', locale))}};document.getElementById('reject').onclick=()=>{a.checked=false;p.checked=false;localStorage.setItem('analytics-consent','denied');localStorage.setItem('prefs-consent','denied');s.textContent=${JSON.stringify(t('cookieRejected', locale))}};`}</script>
+    <p class="mt-5"><a class="underline" href={localizedPath('privacy', locale)}>{t('footerPrivacy', locale)}</a></p>
+    <script is:inline src="/cookie-settings.js"></script>
   </main>
   <Footer locale={locale} routeKey={routeKey} />
 </Base>

@@ -4,11 +4,14 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.24.0",
-  "engines": { "node": "24.19.0", "pnpm": "11.24.0" },
+  "engines": {
+    "node": "24.19.0",
+    "pnpm": "11.24.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "build": "astro build",
+    "build": "astro build && node scripts/sanitize-worker-output.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -20,6 +23,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "wrangler": "4.135.0"
   }
 }

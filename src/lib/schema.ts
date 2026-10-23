@@ -4,20 +4,18 @@ import {
   GEO,
   MAPS_URL,
   ADDRESS,
-  RATING,
-  OPENING_HOURS,
-  SAME_AS,
   IMAGES,
   ATTRACTION_NAME,
   ATTRACTION_ALT,
 } from '../data/site';
+import { htmlLang, localizedPath } from '../i18n';
 import { home } from '../content/home';
 
 export function buildAttraction(locale: Locale, siteUrl: string) {
-  const url = siteUrl || '';
+  const url = (siteUrl || '').replace(/\/$/, '');
   return {
     '@context': 'https://schema.org',
-    '@type': ['TouristAttraction', 'LocalBusiness'],
+    '@type': ['TouristAttraction', 'Place'],
     '@id': url + '#attraction',
     name: ATTRACTION_NAME[locale],
     alternateName: ATTRACTION_ALT[locale],
@@ -25,18 +23,9 @@ export function buildAttraction(locale: Locale, siteUrl: string) {
     url,
     image: [url + IMAGES.hero, url + IMAGES.night, url + IMAGES.portal],
     hasMap: MAPS_URL,
-    address: { '@type': 'PostalAddress', ...ADDRESS },
+    address: { '@type': 'PostalAddress', streetAddress: ADDRESS.street, addressLocality: ADDRESS.locality, addressRegion: ADDRESS.region, postalCode: ADDRESS.postalCode, addressCountry: ADDRESS.country },
     geo: { '@type': 'GeoCoordinates', latitude: GEO.lat, longitude: GEO.lon },
-    aggregateRating: { '@type': 'AggregateRating', ratingValue: RATING.ratingValue, reviewCount: RATING.reviewCount },
-    openingHoursSpecification: OPENING_HOURS.map((h) => ({
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: h.days,
-      opens: h.opens,
-      closes: h.closes,
-    })),
-    isAccessibleForFree: false,
-    touristType: ['Historic Bridge', 'Cultural Landmark', 'UNESCO World Heritage Site'],
-    sameAs: SAME_AS,
+
   };
 }
 
@@ -54,8 +43,9 @@ export function buildFaq(locale: Locale, siteUrl: string) {
 }
 
 export function buildGraph(locale: Locale, siteUrl: string) {
-  const url = siteUrl || '';
-  const crumbs = home[locale].breadcrumb;
+  const url = (siteUrl || '').replace(/\/$/, '');
+  const pageUrl = new URL(localizedPath('home', locale), url).href;
+  const crumbs = [{ name: home[locale].hero.h1a, url: pageUrl }];
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -64,16 +54,15 @@ export function buildGraph(locale: Locale, siteUrl: string) {
         '@id': url + '#website',
         url,
         name: ATTRACTION_NAME[locale],
-        inLanguage: locale,
+        inLanguage: htmlLang[locale],
       },
       {
         '@type': 'WebPage',
-        '@id': url + '#webpage',
-        url,
-        inLanguage: locale,
+        '@id': pageUrl + '#webpage',
+        url: pageUrl,
+        inLanguage: htmlLang[locale],
         isPartOf: { '@id': url + '#website' },
-        datePublished: '2026-08-01',
-        dateModified: '2026-09-01',
+        dateModified: '2026-10-23',
       },
       {
         '@type': 'BreadcrumbList',

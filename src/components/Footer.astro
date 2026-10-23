@@ -11,9 +11,9 @@ const { locale, routeKey } = Astro.props;
 <footer class="mt-24 bg-[#2a2118] text-[#f7ecd5] py-14">
   <div class="shell grid gap-8 md:grid-cols-[1fr_1.4fr]">
     <div>
-      <Logo/>
+      <Logo locale={locale}/>
       <p class="mt-5 max-w-md text-sm leading-7">{t('footerTagline', locale)}</p>
-      <p class="mt-3 max-w-md text-sm leading-7">Chùa Cầu Hội An – Hướng dẫn Du lịch.</p>
+      <p class="mt-3 max-w-md text-sm leading-7">{locale === 'vi' ? 'Chùa Cầu Hội An – Hướng dẫn Du lịch.' : locale === 'en' ? 'Chùa Cầu Hội An – Visitor Guide.' : '會安日本廊橋旅遊導覽。'}</p>
     </div>
     <div class="text-sm leading-7">
       <nav class="mb-5 flex flex-wrap gap-5 sans">
@@ -22,7 +22,7 @@ const { locale, routeKey } = Astro.props;
         <a class="footer-link" href={localizedPath('cookie', locale)}>{t('footerCookie', locale)}</a>
       </nav>
       <p>{t('footerSources', locale)}</p>
-      <p class="mt-3">Bản quyền ảnh: mọi hình ảnh thuộc quyền của tác giả tương ứng; thông tin ghi công nằm trong hồ sơ dự án.</p>
+      <p class="mt-3"><a class="footer-link" href="/CREDITS.txt">{locale === 'vi' ? 'Nguồn ảnh và giấy phép' : locale === 'en' ? 'Image sources and licences' : '照片來源與授權'}</a></p>
       <p class="mt-3">{t('footerCopyright', locale)}</p>
     </div>
   </div>

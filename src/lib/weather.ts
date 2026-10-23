@@ -5,7 +5,7 @@
 import type { Locale } from '../i18n';
 
 export const LAT = 15.8770873;
-export const LON = 108.3234955;
+export const LON = 108.3260704;
 export const TZ = 'Asia/Ho_Chi_Minh';
 
 export interface WeatherNow {
@@ -27,6 +27,7 @@ export interface DayForecast {
 }
 
 export interface WeatherData {
+  updatedAt: string;
   now: WeatherNow;
   days: DayForecast[];
 }
@@ -171,7 +172,7 @@ const P: Record<Locale, Phrases> = {
     windy: (lv) => `Gió cấp ${lv}: mặc gọn, tránh váy dài rủ hay mũ dễ bay.`,
     defaultOutfit: 'Thời tiết dễ chịu: trang phục thoải mái là ổn; sáng sớm/tối mát có thể thêm áo khoác mỏng.',
     clear: 'Trời quang: rất hợp đi bộ phố cổ và ngắm cầu dưới nắng; sáng sớm và chiều tà đều đẹp.',
-    cloudy: 'Trời nhiều mây, ánh sáng dịu: rất hợp chụp ảnh và đi bộ lâu không sợ nắng gắt.',
+    cloudy: 'Nhiều mây tạo ánh sáng dịu; chọn thời lượng đi bộ theo nhiệt độ, độ ẩm và mưa thực tế.',
     fog: 'Sương mù: tầm nhìn hạn chế, không hợp ngắm toàn cảnh, nhưng phố cổ mờ sương rất nên thơ.',
     rainPlanHeavy: 'Không nên đi bộ lâu ngoài cầu; chuyển hẳn vào nhà cổ, hội quán, bảo tàng. Ngồi thuyền sông Hoài dễ tạm ngưng khi nước lớn.',
     rainPlanLight: 'Ưu tiên tham quan sớm; chiều tối nếu mưa có thể vào nhà cổ, hội quán trong phố cổ. Tuyến thả đèn hoa đăng trên sông Hoài vẫn đẹp lúc chiều tối.',
@@ -201,7 +202,7 @@ const P: Record<Locale, Phrases> = {
     windy: (lv) => `Wind level ${lv}: dress snugly; avoid long flowing skirts or hats that blow away.`,
     defaultOutfit: 'Pleasant weather: comfortable clothes are fine; add a light jacket on cool mornings/evenings.',
     clear: 'Clear skies: great for walking the old town and viewing the bridge in sunlight; both dawn and dusk are lovely.',
-    cloudy: 'Cloudy with soft light: ideal for photos and long walks without harsh sun.',
+    cloudy: 'Clouds can soften the light; plan walks around the actual heat, humidity and rain.',
     fog: 'Fog: limited visibility, not ideal for wide views, but the misty old town is very atmospheric.',
     rainPlanHeavy: 'Avoid long walks on the bridge; head into old houses, assembly halls and museums. The Hoài river boat ride may pause in high water.',
     rainPlanLight: 'Visit early; if it rains later, step into old houses and assembly halls. The Hoài lantern release is still nice in the evening.',
@@ -231,7 +232,7 @@ const P: Record<Locale, Phrases> = {
     windy: (lv) => `風力 ${lv} 級：穿著合身，避免長裙飄逸或帽子被吹走。`,
     defaultOutfit: '天氣舒適：一般休閒服裝即可；清早或夜晚偏涼可加薄外套。',
     clear: '晴朗：適合漫步古鎮、在陽光下賞橋；清晨與黃昏皆美。',
-    cloudy: '多雲、光線柔和：適合拍照與長時間戶外步行，不畏烈陽。',
+    cloudy: '多雲可使光線柔和；請依實際溫度、濕度和降雨安排步行。',
     fog: '起霧：能見度低，不適合眺望全景，但薄霧中的古鎮極具詩意。',
     rainPlanHeavy: '不宜在橋上久走；改入古宅、會館、博物館。秋盆河水位高時乘船容易暫停。',
     rainPlanLight: '優先早訪；午後若下雨可進入古宅與會館。黃昏時秋盆河放水燈仍美。',
@@ -339,60 +340,41 @@ function buildUrl(): string {
   return `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
 }
 
-// Trả về bản tin thời tiết; kết quả được lưu tạm ở biên Cloudflare (khoảng 30 phút).
+// Validate raw provider data before rounding or displaying a success state.
+export function parseWeather(raw: unknown): WeatherData {
+ const j = raw as Record<string, any>;
+ if (!j || !j.current || !j.daily) throw new Error('Incomplete weather');
+ const c=j.current, d=j.daily;
+ const number=(v: unknown, min: number, max: number): number => {
+  if(typeof v !== 'number' || !Number.isFinite(v) || v < min || v > max) throw new Error('Invalid weather value');
+  return v;
+ };
+ const code=(v: unknown): number => { const n=number(v,0,99); if(!Number.isInteger(n)||!(n in WMO_TEXT))throw new Error('Invalid weather code');return n; };
+ if(typeof c.time !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(c.time) || !Number.isFinite(Date.parse(c.time+'+07:00')))throw new Error('Missing weather time');
+ if(!Array.isArray(d.time)||d.time.length!==7)throw new Error('Incomplete forecast');
+ const keys=['weather_code','temperature_2m_max','temperature_2m_min','precipitation_probability_max','uv_index_max','wind_speed_10m_max'];
+ if(keys.some(k=>!Array.isArray(d[k])||d[k].length!==7))throw new Error('Incomplete forecast fields');
+ const days: DayForecast[]=d.time.map((date: unknown,i: number)=>{
+  if(typeof date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date))||new Date(date).toISOString().slice(0,10)!==date)throw new Error('Invalid forecast date');
+  if(i && Date.parse(date)-Date.parse(d.time[i-1])!==86400000)throw new Error('Unordered forecast');
+  const min=number(d.temperature_2m_min[i],-100,65),max=number(d.temperature_2m_max[i],-100,65);
+  if(min>max)throw new Error('Inverted forecast');
+  return {date,code:code(d.weather_code[i]),tMin:Math.round(min),tMax:Math.round(max),precipProb:number(d.precipitation_probability_max[i],0,100),uvMax:number(d.uv_index_max[i],0,50),windMaxKmh:number(d.wind_speed_10m_max[i],0,500)};
+ });
+ if(days[0].date!==c.time.slice(0,10))throw new Error('Mismatched forecast date');
+ return { updatedAt:c.time, now:{temperature:Math.round(number(c.temperature_2m,-100,65)),apparent:Math.round(number(c.apparent_temperature,-120,80)),humidity:number(c.relative_humidity_2m,0,100),windKmh:number(c.wind_speed_10m,0,500),code:code(c.weather_code)},days };
+}
+
 export async function getWeather(): Promise<WeatherData> {
-  const url = buildUrl();
-  const cacheKey = new Request(url);
-
-  const hasCache = typeof caches !== 'undefined' && caches.default;
-  if (hasCache) {
-    try {
-      const hit = await caches.default.match(cacheKey);
-      if (hit) return (await hit.json()) as WeatherData;
-    } catch {
-      /* bỏ qua lỗi cache, tiếp tục truy xuất trực tiếp */
-    }
-  }
-
-  const res = await fetch(url, {
-    cf: { cacheTtl: 1800 },
-    headers: { 'User-Agent': 'chuacau-org/1.0 (+https://chuacau.org)' },
-  });
-  if (!res.ok) throw new Error(`weather request failed: ${res.status}`);
-  const json = (await res.json()) as any;
-
-  const now: WeatherNow = {
-    temperature: Math.round(json.current.temperature_2m),
-    apparent: Math.round(json.current.apparent_temperature),
-    humidity: json.current.relative_humidity_2m,
-    windKmh: json.current.wind_speed_10m,
-    code: json.current.weather_code,
-  };
-
-  const days: DayForecast[] = (json.daily.time as string[]).map((date, i) => ({
-    date,
-    code: json.daily.weather_code[i],
-    tMax: Math.round(json.daily.temperature_2m_max[i]),
-    tMin: Math.round(json.daily.temperature_2m_min[i]),
-    precipProb: json.daily.precipitation_probability_max?.[i] ?? 0,
-    uvMax: json.daily.uv_index_max[i],
-    windMaxKmh: json.daily.wind_speed_10m_max[i],
-  }));
-
-  const data: WeatherData = { now, days };
-
-  if (hasCache) {
-    try {
-      await caches.default.put(
-        cacheKey,
-        new Response(JSON.stringify(data), {
-          headers: { 'Content-Type': 'application/json', 'Cache-Control': 'max-age=1800' },
-        })
-      );
-    } catch {
-      /* bỏ qua nếu không ghi được cache */
-    }
-  }
-
+ const url=buildUrl(), key=new Request(url);
+ const edge=typeof caches!=='undefined' ? (caches as CacheStorage & {default?: Cache}).default : undefined;
+ if(edge)try { const hit=await edge.match(key); if(hit)return parseWeather(await hit.json()); }catch { /* Invalid cache is not a forecast. */ }
+ const controller=new AbortController(); const timer=setTimeout(()=>controller.abort(),4500);
+ try {
+  const response=await fetch(key,{signal:controller.signal});
+  if(!response.ok)throw new Error('Weather unavailable');
+  const raw: unknown=await response.json(), data=parseWeather(raw);
+  if(edge)try { await edge.put(key,new Response(JSON.stringify(raw),{headers:{'Content-Type':'application/json','Cache-Control':'max-age=1800'}})); }catch { /* Cache failure does not change valid data. */ }
   return data;
+ } finally { clearTimeout(timer); }
 }

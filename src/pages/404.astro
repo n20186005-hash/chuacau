@@ -4,13 +4,14 @@ import SiteHeader from '../components/SiteHeader.astro';
 import Footer from '../components/Footer.astro';
 import { t, localizedPath, type Locale } from '../i18n';
 
+Astro.response.status = 404;
 const path = Astro.url.pathname;
 const locale: Locale = path.startsWith('/en/') ? 'en' : path.startsWith('/zh/') ? 'zh' : 'vi';
 const title = `${t('notFoundH2', locale)} | Chùa Cầu Hội An`;
 const desc = t('notFoundLead', locale);
 const homeHref = localizedPath('home', locale);
 ---
-<Base locale={locale} routeKey="home" title={title} description={desc}>
+<Base noindex locale={locale} routeKey="home" title={title} description={desc}>
   <SiteHeader locale={locale} routeKey="home" solid />
   <main class="shell max-w-2xl py-24 text-center">
     <p class="sans text-sm tracking-[.2em] uppercase text-[#9d3b2f]">{t('notFoundKicker', locale)}</p>

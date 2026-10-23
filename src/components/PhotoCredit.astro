@@ -1,0 +1,8 @@
+---
+import type { Locale } from '../i18n';
+interface Props { locale: Locale; kind: 'day' | 'night' | 'portal'; }
+const { locale, kind } = Astro.props;
+const sources = {"day": "https://commons.wikimedia.org/wiki/File:2024_H%E1%BB%99i_An_-_Japanese_Covered_Bridge_%28Ch%C3%B9a_C%E1%BA%A7u%29_after_renovation_-_img_03.jpg", "night": "https://commons.wikimedia.org/wiki/File:2024_H%E1%BB%99i_An_-_Japanese_Covered_Bridge_%28Ch%C3%B9a_C%E1%BA%A7u%29_after_renovation_-_img_08.jpg", "portal": "https://commons.wikimedia.org/wiki/File:2024_H%E1%BB%99i_An_-_Japanese_Covered_Bridge_%28Ch%C3%B9a_C%E1%BA%A7u%29_after_renovation_-_portal_-_img_02.jpg"};
+const label = {vi:'Ảnh: Chainwit. · 01/08/2024 · thu nhỏ, có thể cắt khi hiển thị.',en:'Photo: Chainwit. · 1 August 2024 · resized; display may crop.',zh:'攝影：Chainwit. · 2024年8月1日 · 縮圖，顯示時可能裁切。'}[locale];
+---
+<p class="photo-credit text-xs sans leading-6"><a href={sources[kind]} class="underline">{label}</a> <a class="underline" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>

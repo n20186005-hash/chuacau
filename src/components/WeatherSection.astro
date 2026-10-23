@@ -46,6 +46,7 @@ const wind = data ? beaufort(data.now.windKmh, locale) : null;
       <div class="card mt-10 p-7 text-center leading-7">{t('weatherFailed', locale)}</div>
     )}
 
+    {data && <p class="mt-4 text-sm">Open-Meteo · {data.updatedAt.replace('T', ' ')} (UTC+07:00) · <a class="underline" href="https://open-meteo.com/">{locale === 'vi' ? 'Nguồn dự báo' : locale === 'en' ? 'Forecast source' : '預報來源'}</a></p>}
     {data && nowInfo && wind && (
       <div class="mt-10 grid gap-6 lg:grid-cols-[1.1fr_1fr]">
         <!-- Hiện tại -->
@@ -61,7 +62,7 @@ const wind = data ? beaufort(data.now.windKmh, locale) : null;
           <dl class="mt-6 grid grid-cols-2 gap-4 text-sm">
             <div><dt class="text-[#9d3b2f]">{t('weatherFeels', locale)}</dt><dd class="text-lg font-semibold">{data.now.apparent}°C</dd></div>
             <div><dt class="text-[#9d3b2f]">{t('weatherHumidity', locale)}</dt><dd class="text-lg font-semibold">{data.now.humidity}%</dd></div>
-            <div><dt class="text-[#9d3b2f]">{t('weatherWind', locale)}</dt><dd class="text-lg font-semibold">Cấp {wind.level} · {wind.label} ({Math.round(data.now.windKmh)} km/h)</dd></div>
+            <div><dt class="text-[#9d3b2f]">{t('weatherWind', locale)}</dt><dd class="text-lg font-semibold">{locale === 'vi' ? 'Cấp' : locale === 'en' ? 'Level' : '級'} {wind.level} · {wind.label} ({Math.round(data.now.windKmh)} km/h)</dd></div>
             <div><dt class="text-[#9d3b2f]">{t('weatherPrecip', locale)}</dt><dd class="text-lg font-semibold">{data.days[0].precipProb}%</dd></div>
           </dl>
           <p class="mt-4 text-sm text-[#1e4051]">{t('weatherUv', locale)}: <strong>{uvLabel(data.days[0].uvMax, locale)}</strong> ({data.days[0].uvMax})</p>
@@ -73,7 +74,7 @@ const wind = data ? beaufort(data.now.windKmh, locale) : null;
           <ul class="mt-4 divide-y divide-[rgba(98,69,37,.15)]">
             {data.days.map((d) => (
               <li class="flex items-center justify-between py-3">
-                <span class="w-16 text-sm font-semibold">{dayLabel(d.date)}</span>
+                <span class="w-16 text-sm font-semibold">{dayLabel(d.date)} {dayName(d.date)}</span>
                 <span class="w-14 text-center text-xl" aria-hidden="true">{wmo(d.code, locale).icon}</span>
                 <span class="flex-1 px-2 text-sm">{wmo(d.code, locale).text}</span>
                 <span class="text-sm font-semibold">{d.tMin}° / {d.tMax}°</span>

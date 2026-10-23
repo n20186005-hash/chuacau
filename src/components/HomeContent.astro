@@ -1,4 +1,5 @@
 ---
+import PhotoCredit from './PhotoCredit.astro';
 import WeatherSection from './WeatherSection.astro';
 import { home } from '../content/home';
 import { t } from '../i18n';
@@ -13,8 +14,7 @@ const c = home[locale];
 const seasonCols = t('seasonCols', locale).split('|');
 const behaviorH = t('responsibilityBehavior', locale);
 
-const MAP_IFRAME =
-  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6825.748861565974!2d108.32349547703177!3d15.877087284774783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31420e7c2d02ec59%3A0x765864d6697d4846!2zQ2jDuWEgQ-G6p3U!5e1!3m2!1szh-CN!2szh-CN!4v1788188750512!5m2!1szh-CN!2szh-CN';
+const MAP_IFRAME = 'https://www.google.com/maps?q=15.8770873,108.3260704&output=embed';
 ---
 
 <section class="hero flex items-end text-white">
@@ -29,6 +29,7 @@ const MAP_IFRAME =
     </div>
   </div>
 </section>
+<div class="shell py-3"><PhotoCredit locale={locale} kind="day" /></div>
 
 <main>
   <section class="paper py-20">
@@ -48,7 +49,7 @@ const MAP_IFRAME =
       </div>
       <figure class="gallery min-h-[480px]">
         <img src="/images/chua-cau-night.jpg" alt={c.intro.figcaption} loading="lazy"/>
-        <figcaption class="mt-3 text-xs sans">{c.intro.figcaption}</figcaption>
+        <figcaption class="mt-3 text-xs sans">{c.intro.figcaption}<PhotoCredit locale={locale} kind="night" /></figcaption>
       </figure>
     </div>
   </section>
@@ -91,8 +92,11 @@ const MAP_IFRAME =
         <h2 class="section-title">{c.moments.h2}</h2>
         <p class="mt-6 max-w-xl leading-8 text-[#e9e3d7]">{c.moments.lead}</p>
       </div>
+      <div>
       <div class="gallery h-[420px]">
-        <img src="/images/chua-cau-portal.jpg" alt={c.moments.h2} loading="lazy"/>
+        <img src="/images/chua-cau-portal.jpg" alt={locale === 'vi' ? 'Cổng Chùa Cầu, 01/08/2024' : locale === 'en' ? 'Chùa Cầu portal, 1 August 2024' : '日本廊橋入口，2024年8月1日'} loading="lazy"/>
+      </div>
+      <PhotoCredit locale={locale} kind="portal" />
       </div>
     </div>
   </section>

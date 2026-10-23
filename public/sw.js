@@ -1,44 +1,8 @@
-const CACHE = 'chuacau-v1';
-const PRECACHE = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/images/chua-cau-day.jpg',
-  '/images/chua-cau-night.jpg',
-  '/images/chua-cau-portal.jpg',
-  '/icons/favicon.svg',
-  '/icons/apple-touch-icon.png',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png'
-];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting())
-  );
-});
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
-      .then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  const request = event.request;
-  if (request.method !== 'GET' || !request.url.startsWith(self.location.origin)) return;
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      const fetched = fetch(request).then((response) => {
-        if (response && response.ok && (response.type === 'basic' || response.type === 'default')) {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      }).catch(() => cached);
-      return cached || fetched;
-    })
-  );
+const CACHE = 'chuacau-static-v2';
+self.addEventListener('install', event => event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('chuacau-') && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));
+self.addEventListener('fetch', event => {
+ const request = event.request, url = new URL(request.url);
+ if (request.method !== 'GET' || url.origin !== self.location.origin || request.mode === 'navigate' || !/\.(?:png|jpg|svg|webp|css|woff2?)$/.test(url.pathname)) return;
+ event.respondWith(fetch(request).then(response => { if (response.ok) { const copy=response.clone(); event.waitUntil(caches.open(CACHE).then(cache=>cache.put(request,copy))); } return response; }).catch(()=>caches.match(request).then(hit=>hit || Response.error())));
 });
