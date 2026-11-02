@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Footer from '../components/Footer.astro';
+import { guideCategories, guideCount, getGuidesByCategory } from '../content/guides';
+
+const canonicalPath = '/cam-nang-chua-cau/';
+const siteUrl = Astro.site?.toString() ?? '';
+const canonicalUrl = siteUrl ? new URL(canonicalPath, siteUrl).href : canonicalPath;
+const categoryOrder = Object.keys(guideCategories) as Array<keyof typeof guideCategories>;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Cẩm nang Chùa Cầu',
+    description: `Trang tổng hợp ${guideCount} bài viết chuyên đề về Chùa Cầu và khu phố cổ Hội An.`,
+    url: canonicalUrl,
+    inLanguage: 'vi',
+  },
+];
+---
+<Base
+  locale="vi"
+  title="Cẩm nang Chùa Cầu Hội An"
+  description={`Trang tổng hợp ${guideCount} bài viết chuyên đề về Chùa Cầu, phố cổ Hội An và các lộ trình liên quan.`}
+  canonicalPath={canonicalPath}
+  alternates={[]}
+  jsonLd={jsonLd}
+>
+  <SiteHeader locale="vi" solid languageLinks={[]} />
+  <main>
+    <section class="article-hero bg-[#1e4051] py-22 text-white">
+      <div class="shell">
+        <p class="sans text-xs tracking-[.22em] uppercase text-[#ead7b4]">TỔNG HỢP CHỦ ĐỀ</p>
+        <h1 class="mt-6 max-w-4xl text-4xl leading-tight md:text-6xl">Cẩm nang Chùa Cầu Hội An</h1>
+        <p class="mt-6 max-w-3xl text-lg leading-8 text-[#f3ede2]">
+          Đây là nơi gom toàn bộ {guideCount} trang chuyên đề đã được tạo cho Chùa Cầu và khu vực quanh đó.
+          Bạn có thể đi theo từng nhóm câu hỏi để chọn đúng nội dung mình cần trước chuyến đi.
+        </p>
+      </div>
+    </section>
+
+    <section class="paper py-16">
+      <div class="shell space-y-14">
+        {categoryOrder.map((categoryKey) => {
+          const category = guideCategories[categoryKey];
+          const items = getGuidesByCategory(categoryKey);
+          return (
+            <section>
+              <div class="max-w-3xl">
+                <p class="sans text-xs tracking-[.18em] uppercase text-[#9d3b2f]">{category.label}</p>
+                <h2 class="mt-3 text-3xl leading-tight">{category.label}</h2>
+                <p class="mt-4 leading-7">{category.lead}</p>
+              </div>
+              <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {items.map((guide) => (
+                  <a class="card block p-6 transition-colors hover:bg-white" href={`/${guide.slug}/`}>
+                    <h3 class="text-xl leading-8">{guide.title}</h3>
+                    <p class="mt-3 text-sm leading-7 text-[#5c4b3a]">{guide.description}</p>
+                  </a>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </section>
+  </main>
+  <Footer locale="vi" routeKey="home" />
+</Base>

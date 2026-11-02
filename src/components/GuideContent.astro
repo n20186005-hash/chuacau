@@ -1,0 +1,116 @@
+---
+import type { GuidePage } from '../content/guides';
+import { getGuide, guideCategories, guideSources } from '../content/guides';
+
+interface Props {
+  guide: GuidePage;
+}
+
+const { guide } = Astro.props;
+const category = guideCategories[guide.category];
+const relatedGuides = guide.related.map((slug) => getGuide(slug)).filter(Boolean) as GuidePage[];
+const sources = guide.sources.map((key) => guideSources[key]);
+---
+
+<main>
+  <section class="article-hero bg-[#2a2118] py-22 text-white">
+    <div class="shell">
+      <nav class="sans text-xs uppercase tracking-[.14em] text-[#ead7b4]">
+        <a href="/">Chùa Cầu</a>
+        <span class="mx-2">/</span>
+        <a href="/cam-nang-chua-cau/">Cẩm nang</a>
+        <span class="mx-2">/</span>
+        <span>{category.label}</span>
+      </nav>
+      <p class="sans text-xs tracking-[.22em] uppercase text-[#f4d99d]">{guide.eyebrow}</p>
+      <div class="mt-4 flex flex-wrap gap-2 text-sm">
+        <a class="tag border-white/30 text-white" href="/cam-nang-chua-cau/">Cẩm nang Chùa Cầu</a>
+        <span class="tag border-white/30 text-white">{category.label}</span>
+      </div>
+      <h1 class="mt-6 max-w-4xl text-4xl leading-tight md:text-6xl">{guide.title}</h1>
+      <p class="mt-6 max-w-3xl text-lg leading-8 text-[#f6efe4]">{guide.lead}</p>
+    </div>
+  </section>
+
+  <section class="paper py-12">
+    <div class="shell">
+      <div class="grid gap-4 md:grid-cols-3">
+        {guide.facts.map((fact) => (
+          <article class="fact-card">
+            <span class="fact-label sans">{fact.label}</span>
+            <strong class="fact-value text-xl leading-7">{fact.value}</strong>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="shell grid gap-10 lg:grid-cols-[0.72fr_1.28fr]">
+      <aside class="card h-fit p-6">
+        <a class="sans text-xs uppercase tracking-[.14em] text-[#9d3b2f]" href="/cam-nang-chua-cau/">← Quay lại trang tổng hợp</a>
+        <p class="sans text-xs tracking-[.18em] uppercase text-[#9d3b2f]">Đi nhanh trong trang</p>
+        <ol class="mt-4 space-y-3 text-sm leading-6">
+          {guide.sections.map((section, index) => (
+            <li><a class="text-[#1e4051]" href={`#sec-${index + 1}`}>{section.h2}</a></li>
+          ))}
+        </ol>
+      </aside>
+
+      <div class="space-y-10">
+        {guide.sections.map((section, index) => (
+          <section class="card p-7" id={`sec-${index + 1}`}>
+            <h2 class="text-2xl leading-tight">{section.h2}</h2>
+            <div class="prose-vn mt-4">
+              {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+            {section.bullets && section.bullets.length > 0 && (
+              <ul class="mt-5 list-disc space-y-2 pl-5 text-sm leading-7">
+                {section.bullets.map((item) => <li>{item}</li>)}
+              </ul>
+            )}
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#ead7b4] py-16">
+    <div class="shell">
+      <h2 class="text-3xl leading-tight">Câu hỏi thường gặp</h2>
+      <div class="mt-8 grid gap-4">
+        {guide.faqs.map(([question, answer]) => (
+          <details class="card p-6">
+            <summary class="cursor-pointer text-lg font-bold">{question}</summary>
+            <p class="mt-4 leading-7">{answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="paper py-16">
+    <div class="shell grid gap-10 lg:grid-cols-[1.2fr_.8fr]">
+      <div>
+        <h2 class="text-2xl">Nguồn tham khảo</h2>
+        <p class="mt-4 max-w-3xl leading-7">Các nguồn dưới đây là điểm xuất phát để kiểm tra tiếp thông tin chính thức, lịch vận hành trong ngày và bối cảnh di sản của Chùa Cầu.</p>
+        <div class="mt-5 flex flex-wrap gap-3 sans text-sm">
+          {sources.map((source) => <a class="tag" href={source.href} rel="noopener">{source.label}</a>)}
+        </div>
+        <p class="mt-5 text-sm leading-7 text-[#5c4b3a]">Trang cập nhật lần cuối: {guide.updated}.</p>
+      </div>
+
+      <div>
+        <h2 class="text-2xl">Đọc tiếp</h2>
+        <div class="mt-5 grid gap-4">
+          {relatedGuides.map((item) => (
+            <a class="card block p-5 transition-colors hover:bg-white" href={`/${item.slug}/`}>
+              <h3 class="text-lg leading-7">{item.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-[#5c4b3a]">{item.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

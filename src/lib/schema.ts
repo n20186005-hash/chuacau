@@ -7,6 +7,7 @@ import {
   IMAGES,
   ATTRACTION_NAME,
   ATTRACTION_ALT,
+  LAST_CONTENT_REVIEWED,
 } from '../data/site';
 import { htmlLang, localizedPath } from '../i18n';
 import { home } from '../content/home';
@@ -62,7 +63,7 @@ export function buildGraph(locale: Locale, siteUrl: string) {
         url: pageUrl,
         inLanguage: htmlLang[locale],
         isPartOf: { '@id': url + '#website' },
-        dateModified: '2026-10-23',
+        dateModified: LAST_CONTENT_REVIEWED,
       },
       {
         '@type': 'BreadcrumbList',

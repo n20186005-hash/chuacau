@@ -4,6 +4,7 @@ import type { Locale } from '../i18n';
 
 export const GEO = { lat: 15.8770873, lon: 108.3260704 };
 export const MAPS_URL = 'https://maps.app.goo.gl/H1Mb1t265YrSiKrK9';
+export const LAST_CONTENT_REVIEWED = '2026-11-02';
 
 // Current address cross-checked with the Hội An ward government and Maps (2026-10-23).
 export const ADDRESS = {
@@ -12,6 +13,18 @@ export const ADDRESS = {
   region: 'Đà Nẵng',
   postalCode: '564010',
   country: 'VN',
+};
+
+// Third-party listing snapshot supplied on 2026-11-02. Keep visible on-page only;
+// do not publish as site-owned aggregate rating schema.
+export const MAPS_SNAPSHOT = {
+  ratingValue: 4.3,
+  reviewCount: 29566,
+  category: {
+    vi: 'Di tích lịch sử',
+    en: 'Historic landmark',
+    zh: '古迹地标',
+  } satisfies Record<Locale, string>,
 };
 
 export const IMAGES = {

@@ -4,10 +4,11 @@ import { tList, localizedPath, type Locale, type RouteKey } from '../i18n';
 
 interface Props {
   locale: Locale;
-  routeKey: RouteKey;
+  routeKey?: RouteKey;
   solid?: boolean;
+  languageLinks?: { code: Locale; label: string; href: string }[];
 }
-const { locale, routeKey, solid = false } = Astro.props;
+const { locale, routeKey, solid = false, languageLinks } = Astro.props;
 
 const navLabels = tList('nav', locale);
 const navAnchors = tList('navAnchor', locale);
@@ -16,24 +17,28 @@ const langs: { code: Locale; label: string }[] = [
   { code: 'en', label: 'EN' },
   { code: 'zh', label: '中文' },
 ];
-const switchLinks = langs.map((l) => ({ ...l, href: localizedPath(routeKey, l.code) }));
+const switchLinks = languageLinks ?? (routeKey ? langs.map((l) => ({ ...l, href: localizedPath(routeKey, l.code) })) : []);
 ---
 
 { solid ? (
   <header class="bg-[#2a2118] text-white"><div class="shell flex items-center justify-between py-6"><Logo locale={locale}/>
-    <nav class="flex items-center gap-4 sans text-sm" aria-label="Language">
-      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
-    </nav>
+    {switchLinks.length > 0 && (
+      <nav class="flex items-center gap-4 sans text-sm" aria-label="Language">
+        {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
+      </nav>
+    )}
   </div></header>
 ) : (
   <header class="absolute z-10 w-full text-white"><div class="shell flex items-center justify-between py-6"><Logo locale={locale}/>
     <nav class="hidden items-center gap-5 text-sm sans md:flex">
       {navLabels.map((label, i) => <a class="nav-link" href={navAnchors[i]}>{label}</a>)}
-      <span class="mx-1 opacity-40">|</span>
+      {switchLinks.length > 0 && <span class="mx-1 opacity-40">|</span>}
       {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
     </nav>
-    <nav class="flex items-center gap-3 sans text-sm md:hidden" aria-label="Language">
-      {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
-    </nav>
+    {switchLinks.length > 0 && (
+      <nav class="flex items-center gap-3 sans text-sm md:hidden" aria-label="Language">
+        {switchLinks.map((l) => <a class:list={['lang-link', { active: l.code === locale }]} href={l.href} hreflang={l.code === 'zh' ? 'zh-Hant' : l.code} lang={l.code === 'zh' ? 'zh-Hant' : l.code}>{l.label}</a>)}
+      </nav>
+    )}
   </div></header>
 ) }

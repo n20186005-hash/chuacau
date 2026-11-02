@@ -2,8 +2,9 @@
 import PhotoCredit from './PhotoCredit.astro';
 import WeatherSection from './WeatherSection.astro';
 import { home } from '../content/home';
+import { getGuide } from '../content/guides';
 import { t } from '../i18n';
-import { MAPS_URL } from '../data/site';
+import { ADDRESS, MAPS_SNAPSHOT, MAPS_URL, LAST_CONTENT_REVIEWED } from '../data/site';
 import type { Locale } from '../i18n';
 
 interface Props {
@@ -13,6 +14,57 @@ const { locale } = Astro.props;
 const c = home[locale];
 const seasonCols = t('seasonCols', locale).split('|');
 const behaviorH = t('responsibilityBehavior', locale);
+const numberLocale = locale === 'zh' ? 'zh-Hant' : locale === 'vi' ? 'vi-VN' : 'en-US';
+const reviewCount = new Intl.NumberFormat(numberLocale).format(MAPS_SNAPSHOT.reviewCount);
+const featuredGuideSlugs = [
+  'gio-mo-cua-chua-cau',
+  've-chua-cau',
+  'ban-do-va-loi-vao-chua-cau',
+  'thoi-diem-tham-chua-cau',
+  'chua-cau-mua-mua-va-ngap-lut',
+  'lich-trinh-pho-co-nua-ngay',
+];
+const featuredGuides = locale === 'vi'
+  ? featuredGuideSlugs
+      .map((slug) => getGuide(slug))
+      .filter((guide): guide is NonNullable<ReturnType<typeof getGuide>> => Boolean(guide))
+  : [];
+const facts = {
+  vi: {
+    kicker: 'THÔNG TIN MỚI NHẤT',
+    source: 'Ảnh chụp Google Maps do người dùng cung cấp, cập nhật 02/11/2026.',
+    rating: 'Điểm đánh giá',
+    reviews: 'Lượt đánh giá',
+    category: 'Loại địa điểm',
+    address: 'Địa chỉ hiện hành',
+    map: 'Bản đồ',
+    mapCta: 'Xem trên Google Maps',
+    country: 'Việt Nam',
+  },
+  en: {
+    kicker: 'LATEST SNAPSHOT',
+    source: 'Google Maps listing snapshot supplied by the user, updated 2 Nov 2026.',
+    rating: 'Rating',
+    reviews: 'Reviews',
+    category: 'Place type',
+    address: 'Current address',
+    map: 'Map',
+    mapCta: 'View on Google Maps',
+    country: 'Vietnam',
+  },
+  zh: {
+    kicker: '最新快照',
+    source: 'Google 地圖清單快照由使用者提供，更新於 2026 年 11 月 2 日。',
+    rating: '評分',
+    reviews: '評論數',
+    category: '地點類型',
+    address: '現行地址',
+    map: '地圖',
+    mapCta: '在 Google 地圖中開啟',
+    country: '越南',
+  },
+}[locale];
+const addressLine = `${ADDRESS.street}, ${ADDRESS.locality}, ${ADDRESS.region} ${ADDRESS.postalCode}, ${facts.country}`;
 
 const MAP_IFRAME = 'https://www.google.com/maps?q=15.8770873,108.3260704&output=embed';
 ---
@@ -30,6 +82,39 @@ const MAP_IFRAME = 'https://www.google.com/maps?q=15.8770873,108.3260704&output=
   </div>
 </section>
 <div class="shell py-3"><PhotoCredit locale={locale} kind="day" /></div>
+<section class="shell pb-10">
+  <div class="card p-6 md:p-7">
+    <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <div>
+        <span class="tag sans text-xs">{facts.kicker}</span>
+        <p class="mt-3 text-sm leading-6 text-[#5c4b3a]">{facts.source}</p>
+      </div>
+      <p class="sans text-xs uppercase tracking-[.14em] text-[#9d3b2f]">chuacau.org</p>
+    </div>
+    <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <article class="fact-card">
+        <span class="fact-label sans">{facts.rating}</span>
+        <strong class="fact-value">{MAPS_SNAPSHOT.ratingValue.toFixed(1)}</strong>
+      </article>
+      <article class="fact-card">
+        <span class="fact-label sans">{facts.reviews}</span>
+        <strong class="fact-value">{reviewCount}</strong>
+      </article>
+      <article class="fact-card">
+        <span class="fact-label sans">{facts.category}</span>
+        <strong class="fact-value text-2xl">{MAPS_SNAPSHOT.category[locale]}</strong>
+      </article>
+      <article class="fact-card md:col-span-2 xl:col-span-1">
+        <span class="fact-label sans">{facts.address}</span>
+        <strong class="fact-value text-xl leading-7">{addressLine}</strong>
+      </article>
+      <article class="fact-card">
+        <span class="fact-label sans">{facts.map}</span>
+        <a class="btn btn-primary sans mt-3 w-fit" href={MAPS_URL} rel="noopener">{facts.mapCta}</a>
+      </article>
+    </div>
+  </div>
+</section>
 
 <main>
   <section class="paper py-20">
@@ -213,6 +298,30 @@ const MAP_IFRAME = 'https://www.google.com/maps?q=15.8770873,108.3260704&output=
     </div>
   </section>
 
+  {locale === 'vi' && featuredGuides.length > 0 && (
+    <section class="paper py-20">
+      <div class="shell">
+        <span class="tag sans text-xs">TRANG CHUYÊN ĐỀ</span>
+        <h2 class="section-title mt-5">Đi tiếp theo câu hỏi bạn đang có</h2>
+        <p class="mt-5 max-w-3xl leading-8">
+          Từ homepage này, chúng tôi đã tách thêm các trang chuyên đề để bạn không phải đọc một bài quá dài mới ra quyết định.
+          Nếu đang chuẩn bị chuyến đi, hãy bắt đầu bằng những câu hỏi thực tế nhất dưới đây.
+        </p>
+        <div class="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {featuredGuides.map((guide) => guide && (
+            <a class="card block p-6 transition-colors hover:bg-white" href={`/${guide.slug}/`}>
+              <h3 class="text-xl leading-8">{guide.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-[#5c4b3a]">{guide.description}</p>
+            </a>
+          ))}
+        </div>
+        <div class="mt-8">
+          <a class="btn btn-primary sans" href="/cam-nang-chua-cau/">Xem toàn bộ cẩm nang Chùa Cầu</a>
+        </div>
+      </div>
+    </section>
+  )}
+
   <section id="chup-anh" class="py-20">
     <div class="shell">
       <span class="tag sans text-xs">{c.photo.tag}</span>
@@ -285,6 +394,13 @@ const MAP_IFRAME = 'https://www.google.com/maps?q=15.8770873,108.3260704&output=
       <div class="mt-5 flex flex-wrap gap-3 sans text-sm">
         {c.sources.links.map((l) => <a class="tag" href={l.href} rel="noopener">{l.label}</a>)}
       </div>
+      <p class="mt-5 text-sm leading-7 text-[#5c4b3a]">
+        {locale === 'vi'
+          ? `Trang này cập nhật lần cuối: ${LAST_CONTENT_REVIEWED}.`
+          : locale === 'en'
+            ? `This page was last updated on ${LAST_CONTENT_REVIEWED}.`
+            : `本頁最後更新日期：${LAST_CONTENT_REVIEWED}。`}
+      </p>
     </div>
   </section>
 </main>

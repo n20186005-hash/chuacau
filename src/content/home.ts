@@ -36,8 +36,8 @@ export interface HomeContent {
 export const home: Record<Locale, HomeContent> = {
   "vi": {
     "meta": {
-      "title": "Chùa Cầu Hội An: vé phố cổ, giờ tham quan & tu bổ 2024",
-      "description": "Hướng dẫn Chùa Cầu (Cầu Nhật Bản, Lai Viễn Kiều): lịch sử, đợt tu bổ 2024, phân biệt vé phố cổ và giờ vào di tích, địa chỉ, bản đồ và lưu ý đi bộ."
+      "title": "Chùa Cầu Hội An 2026: vé phố cổ, giờ tham quan & lịch sử",
+      "description": "Hướng dẫn du lịch Chùa Cầu Hội An: lịch sử, tu bổ 2024, phân biệt vé phố cổ và giờ vào di tích, địa chỉ hiện hành, bản đồ và lưu ý đi bộ."
     },
     "attractionDescription": "Chùa Cầu, Cầu Nhật Bản và Lai Viễn Kiều là các tên gọi của cây cầu gỗ mái ngói trong Đô thị cổ Hội An. Địa chỉ hiện nay: đường Nguyễn Thị Minh Khai, phường Hội An, thành phố Đà Nẵng. Quảng Nam là tên tỉnh trong nhiều tài liệu trước sắp xếp hành chính năm 2025.",
     "breadcrumb": [
@@ -61,8 +61,8 @@ export const home: Record<Locale, HomeContent> = {
     "hero": {
       "kicker": "Biểu tượng của Đô thị cổ Hội An",
       "breadcrumbLabel": "Hội An › Đà Nẵng › Việt Nam",
-      "h1a": "Chùa Cầu",
-      "h1em": "nơi những dòng văn hóa gặp nhau",
+      "h1a": "Chùa Cầu Hội An",
+      "h1em": "Cầu Nhật Bản (Lai Viễn Kiều)",
       "lead": "Cầu Nhật Bản – Lai Viễn Kiều – là công trình gỗ mái ngói hơn bốn thế kỷ tuổi, nối câu chuyện thương cảng Hội An với ký ức giao thương Việt Nam, Nhật Bản và Trung Hoa.",
       "ctaPlan": "Lập kế hoạch tham quan",
       "ctaMaps": "Mở Google Maps"
@@ -119,7 +119,7 @@ export const home: Record<Locale, HomeContent> = {
       "cards": [
         {
           "title": "Giờ trên bản đồ ≠ lịch mọi khu vực",
-          "body": "Google Maps ghi 09:00–22:00 cả tuần khi đối chiếu ngày 23/10/2026. Đây là thông tin bên thứ ba, không bảo đảm giờ vào cầu, gian thờ hay mọi dịch vụ. Kiểm tra biển tại chỗ và thông báo của đơn vị quản lý; giờ phố đi bộ là lịch riêng."
+          "body": "Google Maps ghi 09:00–22:00 cả tuần theo ảnh chụp danh sách ngày 02/11/2026. Đây là thông tin bên thứ ba, không bảo đảm giờ vào cầu, gian thờ hay mọi dịch vụ. Kiểm tra biển tại chỗ và thông báo của đơn vị quản lý; giờ phố đi bộ là lịch riêng."
         },
         {
           "title": "Vé phố cổ & Chùa Cầu",
@@ -324,7 +324,7 @@ export const home: Record<Locale, HomeContent> = {
         ],
         [
           "Chùa Cầu mở cửa lúc nào?",
-          "Maps ghi 09:00–22:00 cả tuần tại lần kiểm tra 23/10/2026. Không coi đây là bảo đảm vào gian thờ hoặc cầu trong mọi thời điểm; kiểm tra thông báo quản lý tại chỗ. Giờ phố đi bộ và biểu diễn là lịch khác."
+          "Maps ghi 09:00–22:00 cả tuần theo ảnh chụp danh sách ngày 02/11/2026. Không coi đây là bảo đảm vào gian thờ hoặc cầu trong mọi thời điểm; kiểm tra thông báo quản lý tại chỗ. Giờ phố đi bộ và biểu diễn là lịch khác."
         ],
         [
           "Chùa Cầu có vé riêng không?",
@@ -346,7 +346,7 @@ export const home: Record<Locale, HomeContent> = {
     },
     "sources": {
       "h2": "Nguồn đối chiếu chính thức",
-      "lead": "Đối chiếu ngày 23/10/2026. Các nguồn dưới phân biệt di sản, tu bổ, vé phố cổ và địa chỉ hiện hành. Thông tin Maps là ảnh chụp thời điểm của bên thứ ba; quyết định vận hành tại chỗ có thể khác.",
+      "lead": "Các nguồn chính thức dưới đây được đối chiếu trong tháng 10/2026; ảnh chụp danh sách Google Maps mới nhất trên trang này là ngày 02/11/2026. Thông tin Maps là dữ liệu thời điểm của bên thứ ba; quyết định vận hành tại chỗ có thể khác.",
       "links": [
         {
           "href": "https://danangfantasticity.com/en/see-and-do/japanese-covered-bridge-chua-cau",
@@ -373,8 +373,8 @@ export const home: Record<Locale, HomeContent> = {
   },
   "en": {
     "meta": {
-      "title": "Chùa Cầu Hội An: Old Town tickets, hours & 2024 restoration",
-      "description": "Plan a visit to Hội An’s Japanese Covered Bridge: qualified opening hours, Old Town ticket options, 2024 restoration, current address, map and walking advice."
+      "title": "Chùa Cầu Hội An 2026: tickets, opening hours & history",
+      "description": "Visitor guide to Chùa Cầu Hội An: history, 2024 restoration, qualified Old Town ticket details, current address, map and walking advice."
     },
     "attractionDescription": "Chùa Cầu, the Japanese Covered Bridge and Lai Viễn Kiều name the roofed timber bridge in Hội An Ancient Town. Its current address is Nguyễn Thị Minh Khai, Hội An ward, Đà Nẵng. Older sources use Quảng Nam, the province before the 2025 administrative changes.",
     "breadcrumb": [
@@ -398,8 +398,8 @@ export const home: Record<Locale, HomeContent> = {
     "hero": {
       "kicker": "Symbol of the Hội An Ancient Town",
       "breadcrumbLabel": "Hội An › Đà Nẵng › Vietnam",
-      "h1a": "Chùa Cầu",
-      "h1em": "where cultures converge",
+      "h1a": "Chùa Cầu Hội An",
+      "h1em": "Japanese Covered Bridge",
       "lead": "The Japanese Covered Bridge – Lai Viễn Kiều – is a tiled-roof timber bridge over four centuries old, linking the story of the Hội An trading port with the shared memory of Vietnamese, Japanese and Chinese commerce.",
       "ctaPlan": "Plan your visit",
       "ctaMaps": "Open Google Maps"
@@ -456,7 +456,7 @@ export const home: Record<Locale, HomeContent> = {
       "cards": [
         {
           "title": "Map hours are a dated listing",
-          "body": "Google Maps listed 09:00–22:00 every day when checked on 23 October 2026. This third-party schedule does not guarantee entry to the bridge, shrine or surrounding services. Check management notices and signs; pedestrian-zone hours are separate."
+          "body": "Google Maps listed 09:00–22:00 every day in a listing snapshot dated 2 November 2026. This third-party schedule does not guarantee entry to the bridge, shrine or surrounding services. Check management notices and signs; pedestrian-zone hours are separate."
         },
         {
           "title": "Old Town tickets and the bridge",
@@ -661,7 +661,7 @@ export const home: Record<Locale, HomeContent> = {
         ],
         [
           "What are the bridge opening hours?",
-          "Maps listed 09:00–22:00 daily on 23 October 2026. This does not guarantee bridge or shrine entry at every moment. Check management notices locally; pedestrian-zone and performance schedules are separate."
+          "Maps listed 09:00–22:00 daily in a listing snapshot dated 2 November 2026. This does not guarantee bridge or shrine entry at every moment. Check management notices locally; pedestrian-zone and performance schedules are separate."
         ],
         [
           "Does the bridge have a separate ticket?",
@@ -683,7 +683,7 @@ export const home: Record<Locale, HomeContent> = {
     },
     "sources": {
       "h2": "Official reference sources",
-      "lead": "Checked 23 October 2026. These sources distinguish heritage, restoration, Old Town packages and the current address. Maps is a dated third-party listing; on-site operating decisions may differ.",
+      "lead": "The official sources below were cross-checked in October 2026, while the latest Google Maps listing snapshot shown on this page is dated 2 November 2026. Maps is dated third-party data, and on-site operating decisions may differ.",
       "links": [
         {
           "href": "https://danangfantasticity.com/en/see-and-do/japanese-covered-bridge-chua-cau",
@@ -710,8 +710,8 @@ export const home: Record<Locale, HomeContent> = {
   },
   "zh": {
     "meta": {
-      "title": "會安日本廊橋：古鎮門票、開放時間與2024修復",
-      "description": "日本廊橋（Chùa Cầu／來遠橋）繁體中文指南：區分古鎮套票與橋內參觀時間、2024年修復、現行地址、地圖及步行注意事項。"
+      "title": "會安日本廊橋旅遊指南：門票、開放時間與歷史",
+      "description": "會安日本廊橋（Chùa Cầu／來遠橋）旅遊指南：區分古鎮套票與橋內參觀時間、2024年修復、現行地址、地圖及步行注意事項。"
     },
     "attractionDescription": "Chùa Cầu、日本廊橋與來遠橋皆指會安古鎮這座有瓦頂的木橋。現行地址為 Nguyễn Thị Minh Khai、會安坊、峴港市；2025年行政調整前的資料常記為廣南省。",
     "breadcrumb": [
@@ -735,8 +735,8 @@ export const home: Record<Locale, HomeContent> = {
     "hero": {
       "kicker": "會安古鎮的象徵",
       "breadcrumbLabel": "會安 › 峴港 › 越南",
-      "h1a": "日本廊橋",
-      "h1em": "多元文化交會之處",
+      "h1a": "會安日本廊橋",
+      "h1em": "Chùa Cầu / 來遠橋",
       "lead": "日本廊橋（來遠橋）是一座擁有四百餘年歷史的瓦頂木橋，連結會安商港的故事，以及越南、日本與中華往來的集體記憶。",
       "ctaPlan": "規劃行程",
       "ctaMaps": "開啟 Google 地圖"
@@ -793,7 +793,7 @@ export const home: Record<Locale, HomeContent> = {
       "cards": [
         {
           "title": "地圖時段不等於所有區域開放",
-          "body": "2026年10月23日查閱Google地圖，列示全週09:00–22:00。這是第三方時點資訊，不保證橋內、祠廟及周邊服務的進入時間。請核對管理公告與現場告示；步行區時段另計。"
+          "body": "2026年11月2日的 Google 地圖清單快照列示全週 09:00–22:00。這是第三方時點資訊，不保證橋內、祠廟及周邊服務的進入時間。請核對管理公告與現場告示；步行區時段另計。"
         },
         {
           "title": "古鎮套票與日本廊橋",
@@ -998,7 +998,7 @@ export const home: Record<Locale, HomeContent> = {
         ],
         [
           "日本廊橋幾點開放？",
-          "2026年10月23日地圖列示每日09:00–22:00，不保證所有時刻都可進入橋內或祠廟。請查現場管理公告；步行區及演出另有時段。"
+          "2026年11月2日的地圖清單快照列示每日 09:00–22:00，不保證所有時刻都可進入橋內或祠廟。請查現場管理公告；步行區及演出另有時段。"
         ],
         [
           "日本廊橋要另外買票嗎？",
@@ -1020,7 +1020,7 @@ export const home: Record<Locale, HomeContent> = {
     },
     "sources": {
       "h2": "官方對照來源",
-      "lead": "核對日期：2026年10月23日。以下來源分別說明遺產、修復、古鎮套票與現行地址。地圖只是第三方時點資料，現場管理決定可能不同。",
+      "lead": "以下官方來源主要於 2026 年 10 月完成核對；本頁顯示的 Google 地圖清單快照更新至 2026 年 11 月 2 日。地圖只是第三方時點資料，現場管理決定可能不同。",
       "links": [
         {
           "href": "https://danangfantasticity.com/en/see-and-do/japanese-covered-bridge-chua-cau",

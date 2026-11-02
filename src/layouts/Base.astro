@@ -5,21 +5,34 @@ import { SITE_NAME } from '../data/site';
 
 interface Props {
   locale: Locale;
-  routeKey: RouteKey;
+  routeKey?: RouteKey;
   title: string;
   description: string;
   image?: string;
   imageAlt?: string;
   jsonLd?: object[];
   noindex?: boolean;
+  canonicalPath?: string;
+  alternates?: { lang: string; href: string }[];
 }
-const { locale, routeKey, title, description, image = '/images/chua-cau-day.jpg', imageAlt, jsonLd = [], noindex = false } = Astro.props;
+const {
+  locale,
+  routeKey,
+  title,
+  description,
+  image = '/images/chua-cau-day.jpg',
+  imageAlt,
+  jsonLd = [],
+  noindex = false,
+  canonicalPath,
+  alternates: alternateOverride,
+} = Astro.props;
 
 const siteUrl = Astro.site?.toString();
-const path = noindex ? '/404/' : localizedPath(routeKey, locale);
+const path = noindex ? '/404/' : canonicalPath ?? (routeKey ? localizedPath(routeKey, locale) : '/');
 const canonical = siteUrl ? new URL(path, siteUrl).toString() : path;
 const imageAbs = siteUrl ? new URL(image, siteUrl).toString() : image;
-const alternates = hreflangLinks(routeKey, siteUrl);
+const alternates = alternateOverride ?? (routeKey ? hreflangLinks(routeKey, siteUrl) : []);
 const siteName = SITE_NAME[locale];
 const alt = imageAlt ?? siteName;
 ---
